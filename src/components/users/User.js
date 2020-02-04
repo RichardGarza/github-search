@@ -12,7 +12,7 @@ class User extends Component {
 
   static propTypes = {
     loading: PropTypes.bool,
-    user: PropTypes.bool.isRequired,
+    user: PropTypes.object.isRequired,,
     getUser: PropTypes.func.isRequired,
     getUserRepos: PropTypes.func.isRequired,
     repos: PropTypes.array.isRequired
@@ -74,21 +74,21 @@ class User extends Component {
               Visit GitHub Profile
             </a>
             <ul>
-              <li>
+              <li key="login">
                 {login && (
                   <Fragment>
                     <strong>Username: </strong> {login}
                   </Fragment>
                 )}
               </li>
-              <li>
+              <li key="company">
                 {company && (
                   <Fragment>
                     <strong>Company: </strong> {company}
                   </Fragment>
                 )}
               </li>
-              <li>
+              <li key="blog">
                 {blog && (
                   <Fragment>
                     <strong>Website: </strong> {blog}
