@@ -20,6 +20,7 @@ class App extends Component {
   state = {
     users: [],
     user: {},
+    repos: [],
     loading: false,
     previousSearch: ""
   };
@@ -27,15 +28,6 @@ class App extends Component {
   // Method to get rid of search items from view (only available after searching)
   clearUsers = () => {
     this.setState({ users: [], loading: false, previousSearch: "" });
-  };
-
-  // Search Single User
-  getUser = async username => {
-    this.setState({ loading: true });
-    const res = await axios.get(
-      `https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
-    );
-    this.setState({ loading: false, user: res.data });
   };
 
   // Search GitHub Users
@@ -47,9 +39,27 @@ class App extends Component {
     this.setState({ loading: false, users: res.data.items });
   };
 
+  // Get Single User
+  getUser = async username => {
+    this.setState({ loading: true });
+    const res = await axios.get(
+      `https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
+    );
+    this.setState({ loading: false, user: res.data });
+  };
+
+  // Get User's Repositories
+  getUserRepos = async username => {
+    this.setState({ loading: true });
+    const res = await axios.get(
+      `https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
+    );
+    this.setState({ loading: false, repos: res.data });
+  };
+
   render() {
     // Destructuring for simplicity
-    const { users, loading, user, previousSearch } = this.state;
+    const { users, loading, user, previousSearch, repos } = this.state;
 
     return (
       <Router>
@@ -92,7 +102,9 @@ class App extends Component {
                   <User
                     {...props}
                     getUser={this.getUser}
+                    getUserRepos={this.getUserRepos}
                     user={user}
+                    repos={repos}
                     loading={loading}
                   />
                 )}
