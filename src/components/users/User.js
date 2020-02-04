@@ -55,7 +55,7 @@ class User extends Component {
             <img
               src={avatar_url}
               className="round-img"
-              alt="User Profile Picture"
+              alt="User Profile"
               style={{
                 width: "150px"
               }}
