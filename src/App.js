@@ -88,7 +88,7 @@ class App extends Component {
                       />
                     ) : (
                       <h1 className="text-center">
-                        Please begin by typing in a name.{" "}
+                        Please begin by typing in a name. (Try "Richard Garza"){" "}
                       </h1>
                     )}
                   </Fragment>
