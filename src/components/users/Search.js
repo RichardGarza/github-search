@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const Search = ({ searchUsers, clearUsers, users }) => {
   const  [ text, setText ] = useState('');
-  const  [ emptySearch, setEmptySearch ] = useState(true);
+  const  [ emptySearch, setEmptySearch ] = useState(false);
 
   const onChange = e => {
     if (emptySearch === true) {
