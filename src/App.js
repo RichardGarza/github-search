@@ -87,9 +87,9 @@ class App extends Component {
                         previousSearch={previousSearch}
                       />
                     ) : (
-                      <p className="text-center">
-                        Begin by typing in a GitHub User's handle.{" "}
-                      </p>
+                      <h1 className="text-center">
+                        Please begin by typing in a name.{" "}
+                      </h1>
                     )}
                   </Fragment>
                 )}
