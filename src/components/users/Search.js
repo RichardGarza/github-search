@@ -1,48 +1,40 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-export class Search extends Component {
-  state = {
-    text: "",
-    emptySearch: false
+const Search = ({ searchUsers, clearUsers, users }) => {
+  const  [ text, setText ] = useState('');
+  const  [ emptySearch, setEmptySearch ] = useState(true);
+
+  const onChange = e => {
+    if (emptySearch === true) {
+      setEmptySearch( false );
+    }
+    setText(e.target.value );
+  };
+  const onSubmit = e => {
+    e.preventDefault();
+    text === ""
+      ? emptySearchAlert()
+      : searchUsers(text);
+    setText( "" );
   };
 
-  static propTypes = {
-    searchUsers: PropTypes.func.isRequired,
-    clearUsers: PropTypes.func.isRequired
-  };
-
-  emptySearchAlert = () => {
-    this.setState({ emptySearch: true });
+ const emptySearchAlert = () => {
+    setEmptySearch( true );
     setTimeout(() => {
-      this.setState({ emptySearch: false });
+      setEmptySearch( false );
     }, 4000);
   };
 
-  onChange = e => {
-    if (this.state.emptySearch === true) {
-      this.setState({ emptySearch: false });
-    }
-    this.setState({ [e.target.name]: e.target.value });
-  };
-  onSubmit = e => {
-    e.preventDefault();
-    this.state.text === ""
-      ? this.emptySearchAlert()
-      : this.props.searchUsers(this.state.text);
 
-    this.setState({ text: "" });
-  };
-
-  render() {
     return (
       <div>
-        <form onSubmit={this.onSubmit} className="form">
+        <form onSubmit={onSubmit} className="form">
           <input
-            onChange={this.onChange}
+            onChange={onChange}
             type="text"
             name="text"
-            value={this.state.text}
+            value={text}
             placeholder="Search Users..."
           />
           <input
@@ -51,15 +43,15 @@ export class Search extends Component {
             className="btn btn-dark btn-block"
           />
         </form>
-        {this.state.emptySearch && (
+        {emptySearch && (
           <h3 className="alert alert-light text-center">
             You Must Type A Name To Search
           </h3>
         )}
 
-        {this.props.users.length !== 0 && (
+        {users.length !== 0 && (
           <button
-            onClick={this.props.clearUsers}
+            onClick={clearUsers}
             className="btn btn-light btn-block"
           >
             Clear
@@ -67,7 +59,12 @@ export class Search extends Component {
         )}
       </div>
     );
-  }
+  
 }
+
+Search.propTypes = {
+  searchUsers: PropTypes.func.isRequired,
+  clearUsers: PropTypes.func.isRequired
+};
 
 export default Search;
