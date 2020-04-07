@@ -1,14 +1,26 @@
-import React from "react";
+import React, { useContext } from "react";
 import UserItem from "./UserItem";
 import Spinner from "../layout/Spinner";
 import PropTypes from "prop-types";
+import GithubContext from '../../context/github/githubContext';
 
-const Users = ({ users, loading, previousSearch }) => {
+
+const Users = () => {
+  
+  const { loading, users, previousSearch } = useContext(GithubContext);
+ 
   if (loading) {
     return <Spinner />;
-  } else if (users.length === 0 || users.length === undefined) {
+  } else if (previousSearch && users.length === 0 || users.length === undefined) {
     return <h2> No accounts were found under the name {previousSearch}. </h2>;
-  } else {
+  } else if (!previousSearch && users.length === 0){
+    return ( 
+      <h1 className="text-center">
+        Please begin by typing in a name. (Try "Richard Garza"){" "}
+      </h1>
+      )
+  }
+  else {
     return (
       <div style={userStyle}>
         {users.map(user => (

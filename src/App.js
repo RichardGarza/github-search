@@ -3,6 +3,10 @@ import React, { useState,  Fragment } from "react";
 // Router for Routes
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+// Context API State
+import GithubState from './context/github/GithubState';
+
+
 // CSS
 import "./App.css";
 
@@ -18,6 +22,7 @@ import axios from "axios";
 
 const App = () => {
 
+
 const [users, setUsers] = useState([]);
 const [user, setUser] = useState({});
 const [repos, setRepos] = useState([]);
@@ -32,17 +37,7 @@ const [previousSearch, setPreviousSearch] = useState("");
     setPreviousSearch("")
   };
 
-  // Search GitHub Users
-  const searchUsers = async text => {
-    setLoading(true);
-    setPreviousSearch(text);
-    
-    const res = await axios.get(
-      `https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
-    );
-    setLoading(false);
-    setUsers(res.data.items);
-  };
+ 
 
   // Get Single User
   const getUser = async username => {
@@ -65,57 +60,50 @@ const [previousSearch, setPreviousSearch] = useState("");
   };
 
     return (
-      <Router>
-        <div className="App">
-          <NavBar title="GitHub Finder" icon="fab fa-github" />
+      <GithubState>
+        <Router>
+          <div className="App">
+            <NavBar title="GitHub Finder" icon="fab fa-github" />
 
-          <div className="container">
-            <Switch>
-              <Route
-                exact
-                path="/"
-                render={props => (
-                  <Fragment>
-                    {/* // Search Bar */}
-                    <Search
-                      searchUsers={searchUsers}
-                      clearUsers={clearUsers}
-                      users={users}
-                    />
-                    {/* If a search has been made, users will display results of search.   */}
-                    {previousSearch ? (
-                      <Users
+            <div className="container">
+              <Switch>
+                <Route
+                  exact
+                  path="/"
+                  render={props => (
+                    <Fragment>
+                      {/* // Search Bar */}
+                      <Search
+                        clearUsers={clearUsers}
                         users={users}
-                        loading={loading}
-                        previousSearch={previousSearch}
                       />
-                    ) : (
-                      <h1 className="text-center">
-                        Please begin by typing in a name. (Try "Richard Garza"){" "}
-                      </h1>
-                    )}
-                  </Fragment>
-                )}
-              />
-              <Route exact path="/about" component={About} />
-              <Route
-                exact
-                path="/user/:login"
-                render={props => (
-                  <User
-                    {...props}
-                    getUser={getUser}
-                    getUserRepos={getUserRepos}
-                    user={user}
-                    repos={repos}
-                    loading={loading}
-                  />
-                )}
-              />
-            </Switch>
+                     
+                        <Users
+                        />
+                     
+                    </Fragment>
+                  )}
+                />
+                <Route exact path="/about" component={About} />
+                <Route
+                  exact
+                  path="/user/:login"
+                  render={props => (
+                    <User
+                      {...props}
+                      getUser={getUser}
+                      getUserRepos={getUserRepos}
+                      user={user}
+                      repos={repos}
+                      loading={loading}
+                    />
+                  )}
+                />
+              </Switch>
+            </div>
           </div>
-        </div>
-      </Router>
+        </Router>
+      </GithubState>
     );
   
 }
