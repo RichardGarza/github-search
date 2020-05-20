@@ -8,7 +8,7 @@ Here's the link: http://find-a-github.herokuapp.com/
 
 Fellow Programmers, clone and run the following: 
 
-npm i && npm start (Make sure you have react installed)
+npm i && npm start 
 
 Enjoy! 
 
